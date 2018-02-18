@@ -12,7 +12,7 @@ var RndGen = function(key) {
 	} else {
 		throw new Error('Bad key type');
     }
-}
+};
 
 RndGen.prototype.getBytes = function(n) {
 	var r;
@@ -49,16 +49,17 @@ RndGen.prototype.getInt = function(n) {
 
 RndGen.prototype.rand = function(n) {
 	return ((this.getInt(9007199254740991)) / 9007199254740992);
-}
+};
 
 RndGen.prototype._rb = function(b) {
     var d, h, l;
     if (Number.isSafeInteger(b)) {
-		d = this.getBytes(8);
 		if ((b >= 1) && (b <= 32)) {
+			d = this.getBytes(4);
 			l = d.readUInt32LE(0);
 			return (l >>> (32 - b));
 		} else if ((b >= 33) && (b <= 53)) {
+			d = this.getBytes(8);
 			l = d.readUInt32LE(0);
 			h = d.readUInt32LE(4);
 			return (((h >>> (64 - b)) * 4294967296) + l);
@@ -67,7 +68,7 @@ RndGen.prototype._rb = function(b) {
 		}
     }
     throw new Error('Bad number of bits');
-}
+};
 
 RndGen.prototype._bl = function(n) {
     var r;
@@ -75,6 +76,15 @@ RndGen.prototype._bl = function(n) {
 		n = Math.trunc(n / 2);
     }
     return r;
-}
+};
+
+(function(M, m) {
+    if (M !== 9007199254740991) {
+        throw new Error('Unexpected Number.MAX_SAFE_INTEGER');
+    }
+    if (m !== -9007199254740991) {
+        throw new Error('Unexpected Number.MIN_SAFE_INTEGER');
+    }
+})(Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER);
 
 module.exports = RndGen;
