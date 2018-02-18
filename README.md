@@ -89,6 +89,53 @@ NOT pop out is 1.00000000000000000000.
 // 9007199254740992 0.99999999999999988898
 ```
 
+BigNum
+======
+
+I don't want to introduce node-bignum package as a dependency in this
+fairly simple and small class since it would bloat it e.g. in case of
+serverless environments. However in case you are wondering, and why
+wouldn't you be, how this library could be used for generating evenly
+distributed bignums, this is how it is done:
+
+```
+"use strict";
+
+const RndGen = require('./rndgen.js');
+const BigNum = require('bignum');
+
+var rg = new RndGen();
+
+function rndBigNum(n) {
+    if (! BigNum.isBigNum(n)) {
+        n = BigNum(n);
+    }
+    if (! (BigNum.isBigNum(n) && n.ge(0))) {
+        throw new Error('Bad limit');
+    }
+    if (n.eq(0)) {
+        return BigNum(0);
+    }
+    var d, r, b = n.bitLength();
+    do {
+        d = rg.getBytes(Math.ceil(b / 8));
+        if (b % 8) {
+            d[0] >>= (8 - (b % 8))
+        }
+        r = BigNum.fromBuffer(d)
+    } while (r.gt(n));
+    return r;
+}
+
+module.exports = rndBigNum;
+```
+
+Naturally this would be more useful for scenarios where a
+deterministic sequence is required, in which case you'd of course be
+using a key for your RndGen instance. The principle is the same for
+other big integer packages like node-bigint.
+
+
 Author
 ======
 
