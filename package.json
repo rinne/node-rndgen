@@ -1,6 +1,6 @@
 {
 	"name": "rndgen",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "Class generating deterministic or non-deterministic random data",
 	"main": "rndgen.js",
 	"dependencies": {
