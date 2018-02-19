@@ -54,7 +54,7 @@ defaults to Number.MAX_SAFE_INTEGER.
 RndGen.prototype.rand()
 -----------------------
 
-Retrurn a random number x greater or equal to 0 but less than 1.
+Return a random number x greater or equal to 0 but less than 1.
 
 Because of javascript number type, rand() function can return 2^53
 different values and of course they can be enumerated. You'd be
@@ -87,6 +87,20 @@ NOT pop out is 1.00000000000000000000.
 // 9007199254740990 0.99999999999999966693
 // 9007199254740991 0.99999999999999977796
 // 9007199254740992 0.99999999999999988898
+```
+
+RndGen.prototype.shuffle(a)
+---------------------------
+
+Shuffles array or buffer into random order. The ordering is done
+inplace and the return value is the given array again.
+
+```
+const RndGen = require('rndgen');
+var rg = new RndGen();
+
+// Produce array of integers 0..99 in random order
+var seq =  rg.shuffle(new Array(100).fill().map(function(x,i){return i;}));
 ```
 
 BigNum

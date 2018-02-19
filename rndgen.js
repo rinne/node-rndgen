@@ -51,6 +51,25 @@ RndGen.prototype.rand = function(n) {
 	return ((this.getInt(9007199254740991)) / 9007199254740992);
 };
 
+RndGen.prototype.shuffle = function(a) {
+	var i, j, t;
+	if (! (Array.isArray(a) || Buffer.isBuffer(a))) {
+		return new Error('Not array or buffer');
+	}
+	if (a.length < 2) {
+		return a;
+	}
+	for (i = 0; i < a.length - 1; i++) {
+		j = i + this.getInt(a.length - i - 1);
+		if (i != j) {
+			t = a[j];
+			a[j] = a[i];
+			a[i] = t;
+		}
+	}
+	return a;
+};
+
 RndGen.prototype._rb = function(b) {
     var d, h, l;
     if (Number.isSafeInteger(b)) {
