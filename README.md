@@ -15,7 +15,8 @@ const RndGen = require('rndgen');
 var rg = new RndGen(); // Non-deterministic instance
 rg.getBytes(10);       // 10 bytes of random data in Buffer
 rg.getInt();           // random integer 0..9007199254740991 inclusively
-rg.getInt(42)          // random integer 0..42 inclusively
+rg.getInt(42);         // random integer 0..42 inclusively
+rg.getInt(100, 200);   // random integer 100..200 inclusively
 rg.rand()              // random number 0.0 <= x < 1.0
 
 var rg = new RndGen('secret key!'); // Deterministic instance
@@ -44,12 +45,14 @@ Return a Buffer of random bytes. Number of bytes passed as an
 argument.
 
 
-RndGen.prototype.getInt(max)
-----------------------------
+RndGen.prototype.getInt(min, max)
+---------------------------------
 
-Return a random integer in range 0..max inclusively. The limit must be
-nonnegative and a safe integer. If max argument is omitted, it
-defaults to Number.MAX_SAFE_INTEGER.
+Return a random integer in range min..max inclusively. The limits must
+be nonnegative safe integers and min must not be bigger than max. If
+one argument is passed, it is considered the maximum and the minimum
+defaults to zero. If no arguments are passed, the minimum defaults to
+zero and the maximum defaults to Number.MAX_SAFE_INTEGER.
 
 RndGen.prototype.rand()
 -----------------------

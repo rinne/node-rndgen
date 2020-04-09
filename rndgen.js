@@ -32,19 +32,36 @@ RndGen.prototype.getBytes = function(n) {
 	return r;
 };
 
-RndGen.prototype.getInt = function(n) {
-    var b, r;
-    if ((n === undefined) || (n === null)) {
-		n = 9007199254740991;
-    }
+RndGen.prototype.getInt = function() {
+    var n, N, b, s, r;
+	switch (arguments.length) {
+	case 0:
+		n = 0;
+		N = 9007199254740991;
+		break;
+	case 1:
+		n = 0;
+		N = arguments[0];
+		break;
+	case 2:
+		n = arguments[0];
+		N = arguments[1];
+		break;
+	default:
+		throw new Error('Invalid number of arguments');
+	}
     if (! (Number.isSafeInteger(n) && (n >= 0) && (n <= 9007199254740991))) {
-		throw new Error("Bad limit");
+		throw new Error("Bad lower limit");
     }
-    b = this._bl(n);
+    if (! (Number.isSafeInteger(N) && (N >= n) && (N <= 9007199254740991))) {
+		throw new Error("Bad upper limit");
+    }
+	s = N - n;
+    b = this._bl(s);
     do {
 		r = this._rb(b);
-    } while(r > n);
-    return r;
+    } while(r > s);
+    return r + n;
 };
 
 RndGen.prototype.rand = function(n) {
