@@ -50,6 +50,12 @@ RndGen.prototype.getInt = function() {
 	default:
 		throw new Error('Invalid number of arguments');
 	}
+	if ((n === undefined) || (n === null)) {
+		n = 0;
+	}
+	if ((N === undefined) || (N === null)) {
+		N = 9007199254740991;
+	}
     if (! (Number.isSafeInteger(n) && (n >= 0) && (n <= 9007199254740991))) {
 		throw new Error("Bad lower limit");
     }
